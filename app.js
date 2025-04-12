@@ -8,9 +8,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const card = document.createElement('div');
         card.className = 'ticket-card';
         card.innerHTML = `
-            <h3>${ticket.title}</h3>
+            <h3>${ticket.id}. ${ticket.title}</h3>
             <a href="${ticket.zipUrl}" class="download-btn">
-                Скачать билет ${ticket.id}
+                Скачать задание ${ticket.id} (не забудь удалить файл) через wget лучше!!
             </a>
             <div class="cli-instruction">
                 wget ${ticket.zipUrlRaw} -O ticket-${ticket.id}.zip

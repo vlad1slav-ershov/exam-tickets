@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechShop - Интернет-магазин</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="nav">
+        <a href="#" class="logo" onclick="showPage('home')">TechShop</a>
+        <div class="cart-link" onclick="showPage('cart')">
+            <span>Корзина</span>
+            <span id="cart-count">0</span>
+        </div>
+    </nav>
+
+    <!-- Страницы -->
+    <div id="home-page" class="page">
+        <div class="products-grid" id="products-container"></div>
+    </div>
+
+    <div id="product-page" class="page hidden">
+        <button class="back-button" onclick="showPage('home')">← Назад к каталогу</button>
+        <div class="product-page">
+            <div class="product-image-container">
+                <img id="product-image" class="product-image">
+            </div>
+            <div class="product-info">
+                <h1 id="product-title"></h1>
+                <p class="price" id="product-price"></p>
+                <p id="product-description"></p>
+                <button class="btn-primary" onclick="addToCart(currentProduct)">Добавить в корзину</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="cart-page" class="page hidden">
+        <button class="back-button" onclick="showPage('home')">← Назад к каталогу</button>
+        <div class="cart-page">
+            <h2>Ваша корзина</h2>
+            <div id="cart-items"></div>
+            <div class="total" style="text-align: right; margin-top: 2rem;">
+                <h3>Итого: <span id="cart-total">0</span>₽</h3>
+                <button class="btn-primary" onclick="checkout()">Оформить заказ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

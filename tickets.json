@@ -1,8 +1,14 @@
 [
     {
         "id": 1,
-        "title": "Приложение для заметок",
+        "title": "Создать простое приложение для создания и хранения заметок.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-1/ticket-1.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-1/ticket-1.zip"
+    },
+    {
+        "id": 2,
+        "title": "Разработать интерфейс для онлайн-магазина, фокусируясь на отображении товаров и оформления заказа.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-2/ticket-2.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-2/ticket-2.zip"
     }
 ]
