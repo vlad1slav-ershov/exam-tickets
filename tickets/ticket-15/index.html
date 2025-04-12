@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f8f9fa;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+        }
+
+        .page {
+            padding: 2rem;
+            display: none;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 0.3rem;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <button onclick="showPage('vehicles')">Автопарк</button>
+        <button onclick="showPage('clients')">Клиенты</button>
+        <button onclick="showPage('rentals')">Аренда</button>
+    </nav>
+
+    
+    <div id="vehicles" class="page active-page">
+        <h2>Управление автопарком</h2>
+        <button onclick="showVehicleForm()">Добавить автомобиль</button>
+        
+        <div id="vehicleForm" class="card" style="display: none; margin-top: 1rem;">
+            <h3>Данные автомобиля</h3>
+            <form id="carForm" onsubmit="saveVehicle(event)">
+                <div class="form-group">
+                    <label>Марка:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Модель:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Год выпуска:</label>
+                    <input type="number" min="1900" max="2024" required>
+                </div>
+                <div class="form-group">
+                    <label>Пробег (км):</label>
+                    <input type="number" required>
+                </div>
+                <div class="form-group">
+                    <label>Статус:</label>
+                    <select required>
+                        <option value="Доступен">Доступен</option>
+                        <option value="В аренде">В аренде</option>
+                        <option value="На обслуживании">На обслуживании</option>
+                    </select>
+                </div>
+                <div class="actions">
+                    <button type="submit">Сохранить</button>
+                    <button type="button" onclick="hideVehicleForm()">Отмена</button>
+                </div>
+            </form>
+        </div>
+
+        <table id="vehiclesTable">
+            <thead>
+                <tr>
+                    <th>Марка</th>
+                    <th>Модель</th>
+                    <th>Год</th>
+                    <th>Пробег</th>
+                    <th>Статус</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    
+    <div id="clients" class="page">
+        <h2>Регистрация клиентов</h2>
+        <div class="card">
+            <form id="clientForm" onsubmit="saveClient(event)">
+                <div class="form-group">
+                    <label>ФИО:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Паспортные данные:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Контактный телефон:</label>
+                    <input type="tel" required>
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" required>
+                </div>
+                <button type="submit">Зарегистрировать</button>
+            </form>
+        </div>
+
+        <table id="clientsTable" style="margin-top: 2rem;">
+            <thead>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Контакт</th>
+                    <th>Паспорт</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    
+    <div id="rentals" class="page">
+        <h2>Договоры аренды</h2>
+        <div class="card">
+            <form id="rentalForm" onsubmit="createRental(event)">
+                <div class="form-group">
+                    <label>Клиент:</label>
+                    <select id="clientSelect" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Автомобиль:</label>
+                    <select id="carSelect" required></select>
+                </div>
+                <div class="form-group">
+                    <label>Дата начала:</label>
+                    <input type="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Дата окончания:</label>
+                    <input type="date" required>
+                </div>
+                <button type="submit">Оформить аренду</button>
+            </form>
+        </div>
+
+        <div id="activeRentals" style="margin-top: 2rem;"></div>
+    </div>
+
+    <script>
+        
+        let vehicles = JSON.parse(localStorage.getItem('vehicles')) || [];
+        let clients = JSON.parse(localStorage.getItem('clients')) || [];
+        let rentals = JSON.parse(localStorage.getItem('rentals')) || [];
+
+       
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            document.getElementById(pageId).classList.add('active-page');
+            updateTables();
+        }
+
+        
+        function showVehicleForm() {
+            document.getElementById('vehicleForm').style.display = 'block';
+        }
+
+        function hideVehicleForm() {
+            document.getElementById('vehicleForm').style.display = 'none';
+            document.getElementById('carForm').reset();
+        }
+
+        function saveVehicle(event) {
+            event.preventDefault();
+            const form = event.target;
+            const vehicle = {
+                id: Date.now(),
+                make: form[0].value,
+                model: form[1].value,
+                year: form[2].value,
+                mileage: form[3].value,
+                status: form[4].value
+            };
+            
+            vehicles.push(vehicle);
+            localStorage.setItem('vehicles', JSON.stringify(vehicles));
+            hideVehicleForm();
+            updateTables();
+        }
+
+        
+        function saveClient(event) {
+            event.preventDefault();
+            const form = event.target;
+            const client = {
+                id: Date.now(),
+                fullName: form[0].value,
+                passport: form[1].value,
+                phone: form[2].value,
+                email: form[3].value
+            };
+            
+            clients.push(client);
+            localStorage.setItem('clients', JSON.stringify(clients));
+            form.reset();
+            updateTables();
+        }
+
+        
+        function createRental(event) {
+            event.preventDefault();
+            const form = event.target;
+            const rental = {
+                clientId: parseInt(form[0].value),
+                carId: parseInt(form[1].value),
+                startDate: form[2].value,
+                endDate: form[3].value
+            };
+            
+            rentals.push(rental);
+            localStorage.setItem('rentals', JSON.stringify(rentals));
+            updateTables();
+        }
+
+        
+        function updateTables() {
+            // Обновление автомобилей
+            const vehiclesTable = document.querySelector('#vehiclesTable tbody');
+            vehiclesTable.innerHTML = vehicles.map(vehicle => `
+                <tr>
+                    <td>${vehicle.make}</td>
+                    <td>${vehicle.model}</td>
+                    <td>${vehicle.year}</td>
+                    <td>${vehicle.mileage} км</td>
+                    <td>${vehicle.status}</td>
+                    <td>
+                        <button onclick="editVehicle(${vehicle.id})">Изменить</button>
+                        <button onclick="deleteVehicle(${vehicle.id})">Удалить</button>
+                    </td>
+                </tr>
+            `).join('');
+
+            
+            const clientsTable = document.querySelector('#clientsTable tbody');
+            clientsTable.innerHTML = clients.map(client => `
+                <tr>
+                    <td>${client.fullName}</td>
+                    <td>${client.phone}<br>${client.email}</td>
+                    <td>${client.passport}</td>
+                </tr>
+            `).join('');
+
+            
+            updateSelectOptions();
+        }
+
+        function updateSelectOptions() {
+            const clientSelect = document.getElementById('clientSelect');
+            const carSelect = document.getElementById('carSelect');
+            
+            clientSelect.innerHTML = clients.map(client => `
+                <option value="${client.id}">${client.fullName}</option>
+            `).join('');
+            
+            carSelect.innerHTML = vehicles
+                .filter(car => car.status === 'Доступен')
+                .map(car => `
+                    <option value="${car.id}">${car.make} ${car.model} (${car.year})</option>
+                `).join('');
+        }
+
+        
+        function deleteVehicle(id) {
+            vehicles = vehicles.filter(vehicle => vehicle.id !== id);
+            localStorage.setItem('vehicles', JSON.stringify(vehicles));
+            updateTables();
+        }
+
+        function editVehicle(id) {
+            const vehicle = vehicles.find(v => v.id === id);
+            const form = document.getElementById('carForm');
+            form[0].value = vehicle.make;
+            form[1].value = vehicle.model;
+            form[2].value = vehicle.year;
+            form[3].value = vehicle.mileage;
+            form[4].value = vehicle.status;
+            showVehicleForm();
+        }
+
+        
+        updateTables();
+    </script>
+</body>
+</html>

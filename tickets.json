@@ -28,5 +28,29 @@
         "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-8/ticket-8.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-8/ticket-8.zip"
+    },
+    {
+        "id": 9,
+        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-9/ticket-9.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-9/ticket-9.zip"
+    },
+    {
+        "id": 13,
+        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-13/ticket-13.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-13/ticket-13.zip"
+    },
+    {
+        "id": 14,
+        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-14/ticket-14.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-14/ticket-14.zip"
+    },
+    {
+        "id": 15,
+        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-15/ticket-15.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-15/ticket-15.zip"
     }
 ]

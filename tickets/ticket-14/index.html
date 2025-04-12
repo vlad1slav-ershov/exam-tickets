@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #f5f6fa;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .page {
+            padding: 5rem 2rem 2rem;
+            display: none;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        .employee-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .filters {
+            margin-bottom: 2rem;
+        }
+
+        select {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            width: 200px;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .add-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 0.3rem;
+        }
+
+        .employee-details {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" onclick="switchPage('home')">Список сотрудников</a>
+        <a href="#" onclick="switchPage('add')">Добавить сотрудника</a>
+    </nav>
+
+    
+    <div id="home" class="page active-page">
+        <div class="filters">
+            <select id="departmentFilter" onchange="filterEmployees()">
+                <option value="all">Все отделы</option>
+                <option value="IT">IT</option>
+                <option value="HR">HR</option>
+                <option value="Бухгалтерия">Бухгалтерия</option>
+            </select>
+        </div>
+        <div id="employeesList"></div>
+    </div>
+
+    
+    <div id="employee" class="page">
+        <button onclick="switchPage('home')">Назад</button>
+        <div class="employee-details" id="employeeDetails"></div>
+    </div>
+
+    
+    <div id="add" class="page">
+        <div class="add-form">
+            <h2>Добавить сотрудника</h2>
+            <form id="addEmployeeForm" onsubmit="addEmployee(event)">
+                <div class="form-group">
+                    <label>ФИО:</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Отдел:</label>
+                    <select required>
+                        <option value="IT">IT</option>
+                        <option value="HR">HR</option>
+                        <option value="Бухгалтерия">Бухгалтерия</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Дата приема:</label>
+                    <input type="date" required>
+                </div>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        
+        let employees = JSON.parse(localStorage.getItem('employees')) || [];
+        
+        function init() {
+            renderEmployees();
+        }
+
+        
+        function renderEmployees(filteredEmployees = employees) {
+            const container = document.getElementById('employeesList');
+            container.innerHTML = filteredEmployees.map((employee, index) => `
+                <div class="employee-card">
+                    <div>
+                        <h3>${employee.fullName}</h3>
+                        <p>${employee.department} • ${employee.hireDate}</p>
+                    </div>
+                    <button onclick="showEmployee(${index})">Подробнее</button>
+                </div>
+            `).join('') || '<p>Сотрудников не найдено</p>';
+        }
+
+        
+        function filterEmployees() {
+            const department = document.getElementById('departmentFilter').value;
+            const filtered = department === 'all' 
+                ? employees 
+                : employees.filter(e => e.department === department);
+            renderEmployees(filtered);
+        }
+
+        
+        function showEmployee(index) {
+            const employee = employees[index];
+            const details = document.getElementById('employeeDetails');
+            details.innerHTML = `
+                <h2>${employee.fullName}</h2>
+                <p><strong>Отдел:</strong> ${employee.department}</p>
+                <p><strong>Дата приема:</strong> ${employee.hireDate}</p>
+            `;
+            switchPage('employee');
+        }
+
+        
+        function addEmployee(event) {
+            event.preventDefault();
+            const form = event.target;
+            const newEmployee = {
+                fullName: form[0].value,
+                department: form[1].value,
+                hireDate: form[2].value
+            };
+            
+            employees.push(newEmployee);
+            localStorage.setItem('employees', JSON.stringify(employees));
+            form.reset();
+            switchPage('home');
+            renderEmployees();
+        }
+
+        
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            document.getElementById(pageId).classList.add('active-page');
+            
+            if(pageId === 'home') filterEmployees();
+        }
+
+        init();
+    </script>
+</body>
+</html>

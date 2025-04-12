@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Reader</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --background-color: #ecf0f1;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1.5rem;
+            padding: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .page {
+            padding: 5rem 2rem 2rem;
+            display: none;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .filters {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        select {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .rating {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .star {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #ddd;
+            transition: color 0.3s ease;
+        }
+
+        .star.active {
+            color: #f1c40f;
+        }
+
+        .comments-section {
+            margin-top: 2rem;
+        }
+
+        .comment {
+            background: white;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="#" onclick="switchPage('home')">Главная</a>
+        <a href="#" onclick="switchPage('saved')">Сохранённые</a>
+    </nav>
+
+    
+    <div id="home" class="page active-page">
+        <div class="filters">
+            <select id="categoryFilter">
+                <option value="all">Все категории</option>
+                <option value="technology">Технологии</option>
+                <option value="sports">Спорт</option>
+            </select>
+            <select id="sourceFilter">
+                <option value="all">Все источники</option>
+                <option value="source1">Источник 1</option>
+                <option value="source2">Источник 2</option>
+            </select>
+        </div>
+        <div id="newsFeed" class="news-feed"></div>
+    </div>
+
+    <div id="article" class="page">
+        <button onclick="switchPage('home')">Назад</button>
+        <div class="news-card">
+            <h2 id="articleTitle"></h2>
+            <p id="articleContent"></p>
+            <div class="rating" id="rating"></div>
+            <button onclick="saveArticle()">Сохранить статью</button>
+        </div>
+        <div class="comments-section">
+            <h3>Комментарии</h3>
+            <div id="comments"></div>
+            <textarea id="newComment" placeholder="Добавить комментарий"></textarea>
+            <button onclick="addComment()">Отправить</button>
+        </div>
+    </div>
+
+   
+    <div id="saved" class="page">
+        <h2>Сохранённые статьи</h2>
+        <div id="savedArticles" class="news-feed"></div>
+    </div>
+
+    <script>
+        
+        const news = [
+            {id: 1, title: 'Новость 1', content: 'Полный текст новости 1...', category: 'technology', source: 'source1'},
+            {id: 2, title: 'Новость 2', content: 'Полный текст новости 2...', category: 'sports', source: 'source2'}
+        ];
+
+        let currentArticleId = null;
+        
+        
+        function init() {
+            renderNews();
+            setupRating();
+        }
+
+        
+        function renderNews(filteredNews = news) {
+            const newsFeed = document.getElementById('newsFeed');
+            newsFeed.innerHTML = filteredNews.map(article => `
+                <div class="news-card">
+                    <h3>${article.title}</h3>
+                    <p>${article.content.slice(0, 100)}...</p>
+                    <button onclick="showArticle(${article.id})">Читать далее</button>
+                    <button onclick="saveArticle(${article.id})">Сохранить</button>
+                </div>
+            `).join('');
+        }
+
+        
+        function showArticle(id) {
+            const article = news.find(a => a.id === id);
+            document.getElementById('articleTitle').textContent = article.title;
+            document.getElementById('articleContent').textContent = article.content;
+            currentArticleId = id;
+            switchPage('article');
+            renderComments();
+        }
+
+        
+        function setupRating() {
+            const rating = document.getElementById('rating');
+            for(let i = 1; i <= 5; i++) {
+                const star = document.createElement('span');
+                star.className = 'star';
+                star.innerHTML = '★';
+                star.onclick = () => rateArticle(i);
+                rating.appendChild(star);
+            }
+        }
+
+        function rateArticle(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                star.classList.toggle('active', index < rating);
+            });
+        }
+
+        
+        function saveArticle(id) {
+            const saved = JSON.parse(localStorage.getItem('savedArticles') || '[]');
+            if(!saved.includes(id)) {
+                saved.push(id);
+                localStorage.setItem('savedArticles', JSON.stringify(saved));
+            }
+        }
+
+        
+        function addComment() {
+            const comment = document.getElementById('newComment').value;
+            const comments = JSON.parse(localStorage.getItem(`comments_${currentArticleId}`) || '[]');
+            comments.push(comment);
+            localStorage.setItem(`comments_${currentArticleId}`, JSON.stringify(comments));
+            renderComments();
+        }
+
+        function renderComments() {
+            const comments = JSON.parse(localStorage.getItem(`comments_${currentArticleId}`) || []);
+            document.getElementById('comments').innerHTML = comments.map(c => `
+                <div class="comment">${c}</div>
+            `).join('');
+        }
+
+        
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active-page');
+            });
+            document.getElementById(pageId).classList.add('active-page');
+            
+            if(pageId === 'saved') loadSavedArticles();
+        }
+
+        
+        function loadSavedArticles() {
+            const savedIds = JSON.parse(localStorage.getItem('savedArticles') || []);
+            const savedArticles = news.filter(article => savedIds.includes(article.id));
+            document.getElementById('savedArticles').innerHTML = savedArticles.map(article => `
+                <div class="news-card">
+                    <h3>${article.title}</h3>
+                    <p>${article.content.slice(0, 100)}...</p>
+                    <button onclick="showArticle(${article.id})">Читать далее</button>
+                </div>
+            `).join('');
+        }
+
+        
+        document.getElementById('categoryFilter').addEventListener('change', filterNews);
+        document.getElementById('sourceFilter').addEventListener('change', filterNews);
+
+        function filterNews() {
+            const category = document.getElementById('categoryFilter').value;
+            const source = document.getElementById('sourceFilter').value;
+            
+            const filtered = news.filter(article => {
+                return (category === 'all' || article.category === category) &&
+                       (source === 'all' || article.source === source);
+            });
+            
+            renderNews(filtered);
+        }
+
+        init();
+    </script>
+</body>
+</html>
