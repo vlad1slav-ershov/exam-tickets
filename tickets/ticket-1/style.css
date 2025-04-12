@@ -1,0 +1,86 @@
+:root {
+    --bg-color: #f0f0f0;
+    --primary-color: #a8dadc;
+    --secondary-color: #f1faee;
+    --text-color: #2b2d42;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.controls {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.button {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.button:hover {
+    opacity: 0.8;
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.note-card {
+    background-color: var(--secondary-color);
+    padding: 15px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.note-date {
+    font-size: 0.8em;
+    color: #666;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.note-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.note-actions .button {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+}

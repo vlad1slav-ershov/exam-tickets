@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая заметка</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="formTitle">Новая заметка</h1>
+        
+        <form onsubmit="saveNote(event)">
+            <input type="text" id="noteTitle" placeholder="Заголовок" required>
+            <textarea id="noteContent" placeholder="Текст заметки..." required></textarea>
+            <div class="form-buttons">
+                <button type="submit" class="button">Сохранить</button>
+                <a href="index.html" class="button cancel">Отмена</a>
+            </div>
+        </form>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
