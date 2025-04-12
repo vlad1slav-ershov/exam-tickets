@@ -10,5 +10,11 @@
         "title": "Разработать интерфейс для онлайн-магазина, фокусируясь на отображении товаров и оформления заказа.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-2/ticket-2.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-2/ticket-2.zip"
+    },
+    {
+        "id": 3,
+        "title": "Создать простой календарь для планирования событий..",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-3/ticket-3.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-3/ticket-3.zip"
     }
 ]

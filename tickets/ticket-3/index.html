@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Calendar</title>
+    <style>
+        :root {
+            --dark: #2d3436;
+            --medium: #636e72;
+            --light: #dfe6e9;
+            --accent: #0984e3;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Навигация */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .view-switcher {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--medium);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        /* Страницы */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Календарь */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            background: var(--medium);
+            border: 2px solid var(--medium);
+        }
+
+        .calendar-day {
+            background: white;
+            min-height: 120px;
+            padding: 0.5rem;
+            position: relative;
+        }
+
+        .event {
+            background: #74b9ff20;
+            padding: 0.25rem;
+            margin: 2px 0;
+            border-radius: 3px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        /* Форма */
+        .event-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            margin: 2rem auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--medium);
+            border-radius: 4px;
+            margin-top: 0.25rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Главная страница -->
+        <div id="calendar-page" class="page active">
+            <div class="calendar-header">
+                <div>
+                    <button id="prev-period">←</button>
+                    <span id="current-period"></span>
+                    <button id="next-period">→</button>
+                </div>
+                <div class="view-switcher">
+                    <button class="view-btn active" data-view="month">Месяц</button>
+                    <button class="view-btn" data-view="week">Неделя</button>
+                    <button class="view-btn" data-view="day">День</button>
+                </div>
+                <button class="btn-primary" onclick="showPage('event-form')">+ Создать</button>
+            </div>
+            <div id="calendar-view"></div>
+        </div>
+
+        <!-- Страница создания события -->
+        <div id="event-form-page" class="page">
+            <div class="event-form">
+                <h2>Новое событие</h2>
+                <form id="eventForm">
+                    <div class="form-group">
+                        <label>Название:</label>
+                        <input type="text" id="eventTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Дата:</label>
+                        <input type="date" id="eventDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Время:</label>
+                        <input type="time" id="eventTime">
+                    </div>
+                    <div class="form-group">
+                        <label>Категория:</label>
+                        <select id="eventCategory">
+                            <option value="#74b9ff">Работа</option>
+                            <option value="#55efc4">Личное</option>
+                            <option value="#ffeaa7">Важное</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Описание:</label>
+                        <textarea id="eventDescription" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <button type="button" class="btn" onclick="showPage('calendar')">Отмена</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const state = {
+            currentDate: new Date(),
+            view: 'month',
+            events: JSON.parse(localStorage.getItem('calendarEvents')) || []
+        };
+
+        // Инициализация
+        const init = () => {
+            setupEventListeners();
+            renderCalendar();
+        };
+
+        // Рендер календаря
+        const renderCalendar = () => {
+            const container = document.getElementById('calendar-view');
+            container.innerHTML = '';
+            
+            switch(state.view) {
+                case 'month':
+                    renderMonthView(container);
+                    break;
+                case 'week':
+                    renderWeekView(container);
+                    break;
+                case 'day':
+                    renderDayView(container);
+                    break;
+            }
+        };
+
+        const renderMonthView = (container) => {
+            const date = new Date(state.currentDate);
+            const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+            const monthEnd = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+            
+            container.innerHTML = `
+                <div class="calendar-grid">
+                    ${Array.from({length: monthEnd.getDate()}, (_, i) => {
+                        const dayDate = new Date(date.getFullYear(), date.getMonth(), i + 1);
+                        return `
+                            <div class="calendar-day">
+                                <div>${dayDate.getDate()}</div>
+                                ${renderEvents(dayDate)}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            document.getElementById('current-period').textContent = 
+                date.toLocaleDateString('ru', {month: 'long', year: 'numeric'});
+        };
+
+        const renderWeekView = (container) => {
+            const date = new Date(state.currentDate);
+            const startOfWeek = new Date(date);
+            startOfWeek.setDate(date.getDate() - date.getDay());
+            
+            container.innerHTML = `
+                <div class="calendar-grid">
+                    ${Array.from({length: 7}, (_, i) => {
+                        const dayDate = new Date(startOfWeek);
+                        dayDate.setDate(startOfWeek.getDate() + i);
+                        return `
+                            <div class="calendar-day">
+                                <div>${dayDate.toLocaleDateString('ru', {weekday: 'short', day: 'numeric'})}</div>
+                                ${renderEvents(dayDate)}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            
+            document.getElementById('current-period').textContent = 
+                `Неделя ${Math.ceil((state.currentDate.getDate() + 6 - state.currentDate.getDay()) / 7)}`;
+        };
+
+        const renderDayView = (container) => {
+            const date = new Date(state.currentDate);
+            container.innerHTML = `
+                <div class="calendar-day" style="height: 80vh">
+                    <h2>${date.toLocaleDateString('ru', {weekday: 'long', day: 'numeric', month: 'long'})}</h2>
+                    ${renderEvents(date)}
+                </div>
+            `;
+            
+            document.getElementById('current-period').textContent = 
+                date.toLocaleDateString('ru', {day: 'numeric', month: 'long', year: 'numeric'});
+        };
+
+        const renderEvents = (date) => {
+            const events = state.events.filter(e => 
+                new Date(e.date).toDateString() === date.toDateString()
+            );
+            
+            return events.map(e => `
+                <div class="event" style="border-left: 3px solid ${e.category}">
+                    <strong>${e.title}</strong><br>
+                    ${e.time ? `<small>${e.time}</small>` : ''}
+                </div>
+            `).join('');
+        };
+
+        // Обработчики событий
+        const setupEventListeners = () => {
+            document.getElementById('prev-period').addEventListener('click', () => updatePeriod(-1));
+            document.getElementById('next-period').addEventListener('click', () => updatePeriod(1));
+
+            document.querySelectorAll('.view-btn').forEach(btn => 
+                btn.addEventListener('click', () => switchView(btn.dataset.view)));
+
+            document.getElementById('eventForm').addEventListener('submit', e => {
+                e.preventDefault();
+                saveEvent({
+                    title: document.getElementById('eventTitle').value,
+                    date: document.getElementById('eventDate').value,
+                    time: document.getElementById('eventTime').value,
+                    category: document.getElementById('eventCategory').value,
+                    description: document.getElementById('eventDescription').value
+                });
+                showPage('calendar');
+            });
+        };
+
+        // Логика
+        const updatePeriod = (offset) => {
+            const d = state.currentDate;
+            switch(state.view) {
+                case 'month': d.setMonth(d.getMonth() + offset); break;
+                case 'week': d.setDate(d.getDate() + (offset * 7)); break;
+                case 'day': d.setDate(d.getDate() + offset); break;
+            }
+            renderCalendar();
+        };
+
+        const switchView = (view) => {
+            state.view = view;
+            state.currentDate = new Date();
+            document.querySelectorAll('.view-btn').forEach(btn => 
+                btn.classList.toggle('active', btn.dataset.view === view));
+            renderCalendar();
+        };
+
+        const saveEvent = (event) => {
+            state.events.push(event);
+            localStorage.setItem('calendarEvents', JSON.stringify(state.events));
+            renderCalendar();
+        };
+
+        // Навигация
+        const showPage = (pageId) => {
+            document.querySelectorAll('.page').forEach(page => 
+                page.classList.remove('active'));
+            document.getElementById(`${pageId}-page`).classList.add('active');
+            
+            if(pageId === 'event-form') {
+                document.getElementById('eventDate').valueAsDate = new Date();
+            }
+        };
+
+        // Запуск
+        init();
+    </script>
+</body>
+</html>
