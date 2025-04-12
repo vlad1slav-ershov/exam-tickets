@@ -13,8 +13,20 @@
     },
     {
         "id": 3,
-        "title": "Создать простой календарь для планирования событий..",
+        "title": "Создать простой календарь для планирования событий.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-3/ticket-3.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-3/ticket-3.zip"
+    },
+    {
+        "id": 7,
+        "title": "Разработать интерфейс для управления списком контактов с возможностью добавления, редактирования и поиска.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-7/ticket-7.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-7/ticket-7.zip"
+    },
+    {
+        "id": 8,
+        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-8/ticket-8.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-8/ticket-8.zip"
     }
 ]

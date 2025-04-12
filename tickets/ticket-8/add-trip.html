@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новая поездка</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Планирование новой поездки</h1>
+            <a href="index.html" class="btn-secondary">Назад к списку</a>
+        </header>
+
+        <main>
+            <form id="addTripForm">
+                <div class="form-group">
+                    <label for="tripName">Название поездки*</label>
+                    <input type="text" id="tripName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="destination">Место назначения*</label>
+                    <input type="text" id="destination" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="startDate">Дата начала*</label>
+                    <input type="date" id="startDate" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="endDate">Дата окончания</label>
+                    <input type="date" id="endDate">
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Заметки</label>
+                    <textarea id="notes" rows="3"></textarea>
+                </div>
+                
+                <button type="submit" class="btn-primary">Сохранить поездку</button>
+            </form>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

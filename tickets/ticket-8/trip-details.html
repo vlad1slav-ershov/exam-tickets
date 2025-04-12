@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали поездки</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="tripTitle">Детали поездки</h1>
+            <div class="header-actions">
+                <a href="index.html" class="btn-secondary">Назад к списку</a>
+                <button id="editTripBtn" class="btn-primary">Редактировать</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="trip-info">
+                <div class="info-item">
+                    <span class="info-label">Место назначения:</span>
+                    <span id="tripDestination"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Даты:</span>
+                    <span id="tripDates"></span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Заметки:</span>
+                    <span id="tripNotes"></span>
+                </div>
+            </div>
+
+            <div class="trip-sections">
+                <section class="todos-section">
+                    <h2>Список задач</h2>
+                    <form id="addTodoForm">
+                        <input type="text" id="newTodo" placeholder="Добавить новую задачу..." required>
+                        <button type="submit" class="btn-primary">Добавить</button>
+                    </form>
+                    <ul id="todosList">
+                        <!-- Задачи будут загружены здесь -->
+                    </ul>
+                </section>
+
+                <section class="route-section">
+                    <h2>Маршрут</h2>
+                    <form id="addRouteForm">
+                        <input type="text" id="newRoutePoint" placeholder="Добавить пункт маршрута..." required>
+                        <button type="submit" class="btn-primary">Добавить</button>
+                    </form>
+                    <ol id="routeList">
+                        <!-- Пункты маршрута будут загружены здесь -->
+                    </ol>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

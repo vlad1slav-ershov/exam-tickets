@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кулинарная книга</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Мои рецепты</h1>
+            <div class="header-actions">
+                <button id="addRecipeBtn" class="btn-primary">Добавить рецепт</button>
+                <a href="shopping-list.html" class="btn-secondary">Список покупок</a>
+            </div>
+        </header>
+
+        <div class="filters">
+            <div class="filter-group">
+                <label for="mealType">Тип блюда:</label>
+                <select id="mealType">
+                    <option value="">Все</option>
+                    <option value="breakfast">Завтрак</option>
+                    <option value="lunch">Обед</option>
+                    <option value="dinner">Ужин</option>
+                    <option value="dessert">Десерт</option>
+                    <option value="snack">Закуска</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="ingredientFilter">Ингредиент:</label>
+                <input type="text" id="ingredientFilter" placeholder="Начните вводить...">
+            </div>
+            
+            <div class="filter-group">
+                <label for="timeFilter">Время готовки (мин):</label>
+                <input type="number" id="timeFilter" min="0" placeholder="До">
+            </div>
+            
+            <button id="applyFilters" class="btn-primary">Применить</button>
+            <button id="resetFilters" class="btn-secondary">Сбросить</button>
+        </div>
+
+        <main>
+            <div class="recipes-grid" id="recipesList">
+                <!-- Рецепты будут загружены здесь -->
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

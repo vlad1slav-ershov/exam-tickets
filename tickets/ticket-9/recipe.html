@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рецепт</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 id="recipeTitle">Название рецепта</h1>
+            <div class="header-actions">
+                <a href="index.html" class="btn-secondary">Назад к каталогу</a>
+                <button id="editRecipeBtn" class="btn-primary">Редактировать</button>
+                <button id="addToShoppingList" class="btn-accent">В список покупок</button>
+                <button id="favoriteBtn" class="btn-favorite">★</button>
+            </div>
+        </header>
+
+        <main>
+            <div class="recipe-header">
+                <div class="recipe-image" id="recipeImage">
+                    <div class="no-image">Нет изображения</div>
+                </div>
+                <div class="recipe-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Тип блюда:</span>
+                        <span id="recipeType"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Время готовки:</span>
+                        <span id="cookingTime"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Порций:</span>
+                        <span id="servings"></span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-label">Сложность:</span>
+                        <span id="difficulty"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-content">
+                <section class="ingredients-section">
+                    <h2>Ингредиенты</h2>
+                    <ul id="ingredientsList">
+                        <!-- Ингредиенты будут загружены здесь -->
+                    </ul>
+                </section>
+
+                <section class="instructions-section">
+                    <h2>Способ приготовления</h2>
+                    <div id="instructions"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

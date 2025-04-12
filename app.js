@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         card.innerHTML = `
             <h3>${ticket.id}. ${ticket.title}</h3>
             <a href="${ticket.zipUrl}" class="download-btn">
-                Скачать задание ${ticket.id} (не забудь удалить файл) через wget лучше!!
+                кнопка для скачивания билета ${ticket.id}
             </a>
             <div class="cli-instruction">
                 wget ${ticket.zipUrlRaw} -O ticket-${ticket.id}.zip
