@@ -1,0 +1,138 @@
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a1a; /* Темный фон */
+    color: #f4f4f4; /* Светлый текст */
+}
+
+header {
+    background-color: #333;
+    color: yellow; /* Желтый цвет для акцентов */
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav button {
+    background-color: #444;
+    color: yellow;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background-color: #555;
+}
+
+/* Стилевые элементы для страниц */
+main {
+    padding: 20px;
+}
+
+/* Календарь событий */
+#calendar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#calendar div {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #444;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#calendar div:hover {
+    background-color: #555;
+}
+
+#filters {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+#filters label,
+#filters input,
+#filters select {
+    font-size: 1rem;
+    padding: 5px;
+}
+
+button.select-ticket,
+button.proceed-to-payment {
+    background-color: yellow;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+button.select-ticket:hover,
+button.proceed-to-payment:hover {
+    background-color: #f4a261;
+}
+
+/* Оформление заказа */
+#order-form input {
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.event-card {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 250px;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+}
+
+.event-card h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.event-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.event-card .select-ticket {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.event-card .select-ticket:hover {
+    background-color: #45a049;
+}

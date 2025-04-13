@@ -18,6 +18,24 @@
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-3/ticket-3.zip"
     },
     {
+        "id": 4,
+        "title": "Создать приложение для управления задачами с возможностью их категоризации и отслеживания статуса выполнения.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-4/ticket-4.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-4/ticket-4.zip"
+    },
+    {
+        "id": 5,
+        "title": "Разработать интерфейс для учета личных расходов с возможностью категоризации и анализа.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-5/ticket-5.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-5/ticket-5.zip"
+    },
+    {
+        "id": 6,
+        "title": "Создать интерфейс для чтения и управления списком статей из различных источников.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-6/ticket-6.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-6/ticket-6.zip"
+    },
+    {
         "id": 7,
         "title": "Разработать интерфейс для управления списком контактов с возможностью добавления, редактирования и поиска.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-7/ticket-7.zip",
@@ -31,26 +49,80 @@
     },
     {
         "id": 9,
-        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "title": "Создать интерфейс для добавления, поиска и просмотра рецептов блюд с возможностью составления списков покупок.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-9/ticket-9.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-9/ticket-9.zip"
     },
     {
+        "id": 10,
+        "title": "Разработка интерфейса для отслеживания физической активности и прогресса тренировок.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-10/ticket-10.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-10/ticket-10.zip"
+    },
+    {
+        "id": 11,
+        "title": "Создание интерфейса для поиска и покупки билетов на концерты, спектакли и другие культурные события.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-11/ticket-11.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-11/ticket-11.zip"
+    },
+    {
+        "id": 12,
+        "title": "Создание интерфейса для формирования и отслеживания полезных привычек.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-12/ticket-12.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-12/ticket-12.zip"
+    },
+    {
         "id": 13,
-        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "title": "Разработка интерфейса для персонализированного чтения новостных статей с возможностью сохранения и комментирования.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-13/ticket-13.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-13/ticket-13.zip"
     },
     {
         "id": 14,
-        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "title": "Разработать интерфейс для системы учета сотрудников компании.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-14/ticket-14.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-14/ticket-14.zip"
     },
     {
         "id": 15,
-        "title": "Создать интерфейс для планирования поездок с возможностью добавления маршрутов и заметок.",
+        "title": "Разработать систему для автоматизации процесса аренды автомобилей, включая учёт транспортных средств, клиентов и договоров аренды.",
         "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-15/ticket-15.zip",
         "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-15/ticket-15.zip"
+    },
+    {
+        "id": 16,
+        "title": "Разработать систему для упрощённого процесса обработки кредитных заявок, оценки платёжеспособности клиентов и автоматизированного принятия решений.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-16/ticket-16.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-16/ticket-16.zip"
+    },
+    {
+        "id": 17,
+        "title": "Разработать систему для управления арендованными помещениями, включая мониторинг арендаторов, оплату аренды и планирование ремонтов.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-17/ticket-17.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-17/ticket-17.zip"
+    },
+    {
+        "id": 18,
+        "title": "Разработать систему для автоматизации библиотечных процессов, включая учёт книжного фонда, выдачу книг пользователям и отслеживание возвратов.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-18/ticket-18.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-18/ticket-18.zip"
+    },
+    {
+        "id": 19,
+        "title": "Разработать систему для автоматизации процессов платной медицинской клиники, включая запись пациентов на приём, учёт оказанных услуг и финансовую отчётность.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-19/ticket-19.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-19/ticket-19.zip"
+    },
+    {
+        "id": 20,
+        "title": "Разработать систему для автоматизации процессов записи клиентов на услуги салона красоты, управления расписаниями мастеров и отслеживания финансовых показателей.",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/ticket-20/ticket-20.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/ticket-20/ticket-20.zip"
+    },
+    {
+        "id": 21,
+        "title": "Ответы на теорию",
+        "zipUrl": "https://vlad1slav-ershov.github.io/exam-tickets/tickets/teoriya/teoriya.zip",
+        "zipUrlRaw": "https://raw.githubusercontent.com/vlad1slav-ershov/exam-tickets/main/tickets/teoriya/teoriya.zip"
     }
 ]

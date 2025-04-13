@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        nav button {
+            margin-right: 10px;
+            padding: 8px 12px;
+        }
+
+        section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        input, select {
+            padding: 6px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 12px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>💇 Автоматизация салона красоты</h1>
+
+<nav>
+    <button onclick="show('booking')">Запись клиентов</button>
+    <button onclick="show('schedule')">Расписание мастеров</button>
+    <button onclick="show('services')">Учёт услуг</button>
+</nav>
+
+<section class="visible" id="booking">
+    <h2>Запись клиента</h2>
+    <div class="form-group">
+        <input id="clientName" placeholder="Имя клиента">
+        <select id="masterSelect"></select>
+        <input id="visitDate" type="date">
+        <input id="visitTime" type="time">
+        <input id="procedure" placeholder="Процедура (например, стрижка)">
+        <input id="price" placeholder="Цена (₽)" type="number">
+        <button onclick="addBooking()">Записать</button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Клиент</th>
+            <th>Мастер</th>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Процедура</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody id="bookingTable"></tbody>
+    </table>
+</section>
+
+<section id="schedule">
+    <h2>Расписание мастеров</h2>
+    <div class="form-group">
+        <input id="newMaster" placeholder="Имя мастера">
+        <input id="workingHours" placeholder="Смена (например, 09:00 - 18:00)" type="text">
+        <button onclick="addSchedule()">Добавить мастера</button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Мастер</th>
+            <th>Рабочее время</th>
+        </tr>
+        </thead>
+        <tbody id="scheduleTable"></tbody>
+    </table>
+</section>
+
+<section id="services">
+    <h2>Учёт оказанных услуг</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Клиент</th>
+            <th>Процедура</th>
+            <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody id="servicesTable"></tbody>
+    </table>
+    <p><strong>Общий доход:</strong> <span id="totalRevenue">0</span> ₽</p>
+</section>
+
+<script>
+    const masters = [
+        {name: "Анна", hours: "09:00 - 17:00"},
+        {name: "Мария", hours: "11:00 - 19:00"},
+        {name: "Ирина", hours: "10:00 - 18:00"}
+    ];
+    const bookings = [];
+
+    function show(id) {
+        document.querySelectorAll("section").forEach(s => s.classList.remove("visible"));
+        document.getElementById(id).classList.add("visible");
+        if (id === 'booking') updateMasterSelect();
+        if (id === 'schedule') updateScheduleTable();
+        if (id === 'services') updateServicesTable();
+    }
+
+    function updateMasterSelect() {
+        const select = document.getElementById("masterSelect");
+        select.innerHTML = "";
+        masters.forEach(m => {
+            const opt = document.createElement("option");
+            opt.value = m.name;
+            opt.textContent = `${m.name} (${m.hours})`;
+            select.appendChild(opt);
+        });
+    }
+
+    function addSchedule() {
+        const name = document.getElementById("newMaster").value.trim();
+        const hours = document.getElementById("workingHours").value.trim();
+        if (name && hours) {
+            masters.push({name, hours});
+            updateScheduleTable();
+            updateMasterSelect();
+            document.getElementById("newMaster").value = "";
+            document.getElementById("workingHours").value = "";
+        }
+    }
+
+    function updateScheduleTable() {
+        const tbody = document.getElementById("scheduleTable");
+        tbody.innerHTML = "";
+        masters.forEach(m => {
+            tbody.innerHTML += `<tr><td>${m.name}</td><td>${m.hours}</td></tr>`;
+        });
+    }
+
+    function addBooking() {
+        const name = document.getElementById("clientName").value.trim();
+        const master = document.getElementById("masterSelect").value;
+        const date = document.getElementById("visitDate").value;
+        const time = document.getElementById("visitTime").value;
+        const procedure = document.getElementById("procedure").value.trim();
+        const price = parseFloat(document.getElementById("price").value);
+
+        if (name && master && date && time && procedure && price > 0) {
+            bookings.push({name, master, date, time, procedure, price});
+            updateBookingTable();
+            updateServicesTable();
+            document.getElementById("clientName").value = "";
+            document.getElementById("procedure").value = "";
+            document.getElementById("price").value = "";
+        } else {
+            alert("Заполните все поля корректно.");
+        }
+    }
+
+    function updateBookingTable() {
+        const tbody = document.getElementById("bookingTable");
+        tbody.innerHTML = "";
+        bookings.forEach(b => {
+            tbody.innerHTML += `<tr>
+          <td>${b.name}</td><td>${b.master}</td><td>${b.date}</td><td>${b.time}</td>
+          <td>${b.procedure}</td><td>${b.price.toFixed(2)} ₽</td>
+        </tr>`;
+        });
+    }
+
+    function updateServicesTable() {
+        const tbody = document.getElementById("servicesTable");
+        tbody.innerHTML = "";
+        let total = 0;
+        bookings.forEach(b => {
+            total += b.price;
+            tbody.innerHTML += `<tr><td>${b.name}</td><td>${b.procedure}</td><td>${b.price.toFixed(2)} ₽</td></tr>`;
+        });
+        document.getElementById("totalRevenue").textContent = total.toFixed(2);
+    }
+
+    updateMasterSelect();
+    updateScheduleTable();
+    updateBookingTable();
+    updateServicesTable();
+</script>
+</body>
+</html>

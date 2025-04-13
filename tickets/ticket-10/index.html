@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Тренировки</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="script.js"></script>
+
+</head>
+<body>
+<header>
+    <h1>Трекер тренировок</h1>
+    <nav>
+        <button onclick="navigate('home')">Главная</button>
+        <button onclick="navigate('workout')">Тренировка</button>
+        <button onclick="navigate('stats')">Статистика</button>
+    </nav>
+</header>
+
+<main id="main-content">
+    <!-- Контент загружается динамически -->
+</main>
+
+<template id="home-template">
+    <section>
+        <h2>Календарь тренировок</h2>
+        <div id="calendar">
+            <!-- Дни с тренировками и целями -->
+        </div>
+    </section>
+</template>
+
+<template id="workout-template">
+    <section>
+        <h2>Текущая тренировка</h2>
+        <ul id="exercise-list">
+            <!-- Упражнения загружаются скриптом -->
+        </ul>
+        <button class="start">Начать тренировку</button>
+        <button class="complete">Завершить упражнение</button>
+    </section>
+</template>
+
+<template id="stats-template">
+    <section>
+        <h2>Статистика прогресса</h2>
+        <canvas id="progressChart" width="400" height="200"></canvas>
+        <table>
+            <thead>
+            <tr><th>Дата</th><th>Вес</th><th>Сила</th></tr>
+            </thead>
+            <tbody id="stats-table">
+            <!-- Данные прогресса -->
+            </tbody>
+        </table>
+    </section>
+</template>
+</body>
+</html>

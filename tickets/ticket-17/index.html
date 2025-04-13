@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление арендой</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #f8f9fa;
+            color: #212529;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: #2b2d42;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav button:hover {
+            background: #40446b;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button[type="submit"] {
+            background: #4a4e69;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background: #3a3e5b;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .tenant-type {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tenant-type button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #dee2e6;
+            background: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .tenant-type button.active {
+            background: #4a4e69;
+            color: white;
+            border-color: #4a4e69;
+        }
+
+        .calculator-result {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="nav">
+            <button onclick="showSection('properties')">Объекты</button>
+            <button onclick="showSection('tenants')">Арендаторы</button>
+            <button onclick="showSection('calculator')">Расчёт оплаты</button>
+        </nav>
+
+        <!-- Объекты недвижимости -->
+        <section id="properties" class="section active">
+            <h2>Управление объектами</h2>
+            <form id="propertyForm" onsubmit="addProperty(event)">
+                <div class="form-group">
+                    <label>Адрес:</label>
+                    <input type="text" name="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Площадь (м²):</label>
+                    <input type="number" step="0.1" name="area" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Этажность:</label>
+                    <input type="number" name="floors" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Коммуникации:</label>
+                    <select name="utilities" multiple>
+                        <option value="electricity">Электричество</option>
+                        <option value="water">Вода</option>
+                        <option value="gas">Газ</option>
+                        <option value="sewerage">Канализация</option>
+                    </select>
+                </div>
+
+                <button type="submit">Добавить объект</button>
+            </form>
+            <table class="data-table" id="propertiesTable">
+                <thead>
+                    <tr>
+                        <th>Адрес</th>
+                        <th>Площадь</th>
+                        <th>Этажи</th>
+                        <th>Коммуникации</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Арендаторы -->
+        <section id="tenants" class="section">
+            <h2>Управление арендаторами</h2>
+            <div class="tenant-type">
+                <button class="active" onclick="toggleTenantType('legal', event)">Юр. лицо</button>
+                <button onclick="toggleTenantType('individual', event)">Физ. лицо</button>
+            </div>
+
+            <form id="tenantForm" onsubmit="addTenant(event)">
+                <div class="form-group legal-fields">
+                    <label>Название компании:</label>
+                    <input type="text" name="company" required>
+                </div>
+                
+                <div class="form-group legal-fields">
+                    <label>ИНН:</label>
+                    <input type="text" name="inn" required>
+                </div>
+            
+                <div class="form-group individual-fields" style="display: none;">
+                    <label>ФИО:</label>
+                    <input type="text" name="name">
+                </div>
+            
+                <div class="form-group individual-fields" style="display: none;">
+                    <label>Паспортные данные:</label>
+                    <input type="text" name="passport">
+                </div>
+
+                <div class="form-group">
+                    <label>Контактный email:</label>
+                    <input type="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Телефон:</label>
+                    <input type="tel" name="phone" required>
+                </div>
+
+                <button type="submit">Добавить арендатора</button>
+            </form>
+            <table class="data-table" id="tenantsTable">
+                <thead>
+                    <tr>
+                        <th>Тип</th>
+                        <th>Наименование</th>
+                        <th>Контакт</th>
+                        <th>Телефон</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </section>
+
+        <!-- Калькулятор аренды -->
+        <section id="calculator" class="section">
+            <h2>Расчёт арендной платы</h2>
+            <form onsubmit="calculateRent(event)">
+                <div class="form-group">
+                    <label>Объект недвижимости:</label>
+                    <select id="propertySelect" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Арендатор:</label>
+                    <select id="tenantSelect" required></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Тариф за м²:</label>
+                    <input type="number" id="rate" step="0.01" required>
+                </div>
+
+                <button type="submit">Рассчитать</button>
+            </form>
+            <div class="calculator-result" id="calculationResult"></div>
+        </section>
+    </div>
+
+    <script>
+        let properties = JSON.parse(localStorage.getItem('properties')) || [];
+        let tenants = JSON.parse(localStorage.getItem('tenants')) || [];
+        let currentTenantType = 'legal';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updatePropertiesTable();
+            updateTenantsTable();
+            populateSelects();
+            toggleTenantType('legal'); // Инициализация полей при загрузке
+        });
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function toggleTenantType(type, event) {
+            currentTenantType = type;
+            document.querySelectorAll('.tenant-type button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Управление видимостью полей
+            document.querySelectorAll('.legal-fields, .individual-fields').forEach(field => {
+                field.style.display = 'none';
+                field.querySelector('input').required = false;
+            });
+
+            if (type === 'legal') {
+                document.querySelectorAll('.legal-fields').forEach(field => {
+                    field.style.display = 'block';
+                    field.querySelector('input').required = true;
+                });
+            } else {
+                document.querySelectorAll('.individual-fields').forEach(field => {
+                    field.style.display = 'block';
+                    field.querySelector('input').required = true;
+                });
+            }
+        }
+
+        function addTenant(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            const tenant = {
+                type: currentTenantType,
+                email: formData.get('email'),
+                phone: formData.get('phone')
+            };
+
+            if (currentTenantType === 'legal') {
+                tenant.company = formData.get('company');
+                tenant.inn = formData.get('inn');
+            } else {
+                tenant.name = formData.get('name');
+                tenant.passport = formData.get('passport');
+            }
+
+            // Валидация
+            let isValid = true;
+            if (currentTenantType === 'legal' && (!tenant.company || !tenant.inn)) {
+                isValid = false;
+            }
+            if (currentTenantType === 'individual' && (!tenant.name || !tenant.passport)) {
+                isValid = false;
+            }
+
+            if (!isValid) {
+                alert('Заполните все обязательные поля!');
+                return;
+            }
+
+            tenants.push(tenant);
+            localStorage.setItem('tenants', JSON.stringify(tenants));
+            updateTenantsTable();
+            populateSelects();
+            e.target.reset();
+        }
+
+        function addProperty(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            const property = {
+                address: formData.get('address'),
+                area: parseFloat(formData.get('area')),
+                floors: formData.get('floors'),
+                utilities: formData.getAll('utilities')
+            };
+
+            properties.push(property);
+            localStorage.setItem('properties', JSON.stringify(properties));
+            updatePropertiesTable();
+            populateSelects();
+            e.target.reset();
+        }
+
+        function calculateRent(e) {
+            e.preventDefault();
+            const property = properties[document.getElementById('propertySelect').selectedIndex];
+            const rate = parseFloat(document.getElementById('rate').value);
+            const total = property.area * rate;
+
+            document.getElementById('calculationResult').innerHTML = `
+                <h3>Результаты расчёта:</h3>
+                <p>Адрес объекта: ${property.address}</p>
+                <p>Площадь: ${property.area} м²</p>
+                <p>Тариф: ${rate.toFixed(2)} ₽/м²</p>
+                <p><strong>Итого к оплате: ${total.toFixed(2)} ₽</strong></p>
+            `;
+        }
+
+        function updatePropertiesTable() {
+            const tbody = document.querySelector('#propertiesTable tbody');
+            tbody.innerHTML = properties.map(property => `
+                <tr>
+                    <td>${property.address}</td>
+                    <td>${property.area} м²</td>
+                    <td>${property.floors}</td>
+                    <td>${property.utilities.join(', ')}</td>
+                </tr>
+            `).join('');
+        }
+
+        function updateTenantsTable() {
+            const tbody = document.querySelector('#tenantsTable tbody');
+            tbody.innerHTML = tenants.map(tenant => `
+                <tr>
+                    <td>${tenant.type === 'legal' ? 'Юр. лицо' : 'Физ. лицо'}</td>
+                    <td>${tenant.type === 'legal' ? tenant.company : tenant.name}</td>
+                    <td>${tenant.email}</td>
+                    <td>${tenant.phone}</td>
+                </tr>
+            `).join('');
+        }
+
+        function populateSelects() {
+            const propertySelect = document.getElementById('propertySelect');
+            propertySelect.innerHTML = properties
+                .map(p => `<option value="${p.address}">${p.address} (${p.area}м²)</option>`)
+                .join('');
+
+            const tenantSelect = document.getElementById('tenantSelect');
+            tenantSelect.innerHTML = tenants
+                .map(t => `<option value="${t.type === 'legal' ? t.company : t.name}">
+                    ${t.type === 'legal' ? t.company : t.name}
+                </option>`).join('');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,93 @@
+/* Основной стиль */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+    text-align: center;
+}
+
+button {
+    padding: 10px;
+    margin: 5px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.habit-item {
+    background-color: #fff;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
+    width: 80%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.habit-item button {
+    background-color: #007bff;
+    border-radius: 5px;
+}
+
+.completed {
+    background-color: #28a745;
+    color: white;
+}
+
+.incomplete {
+    background-color: #ccc;
+    color: black;
+}
+
+.details {
+    padding: 10px;
+    text-align: left;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.progress-bar span {
+    display: block;
+    height: 20px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    line-height: 20px;
+}

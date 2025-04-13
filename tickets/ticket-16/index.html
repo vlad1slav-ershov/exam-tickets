@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кредитная система банка</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav {
+            background: #2c3e50;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+        }
+
+        .nav button {
+            background: none;
+            border: none;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .nav button:hover {
+            background: #34495e;
+        }
+
+        .section {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        button[type="submit"] {
+            background: #3498db;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        button[type="submit"]:hover {
+            background: #2980b9;
+        }
+
+        .result {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #ecf0f1;
+            border-radius: 8px;
+        }
+
+        .chart-container {
+            margin-top: 2rem;
+            max-width: 600px;
+        }
+
+        .status {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="nav">
+            <button onclick="showSection('application')">Новая заявка</button>
+            <button onclick="showSection('scoring')">Скоринг</button>
+            <button onclick="showSection('payment')">График платежей</button>
+        </nav>
+
+        <!-- Форма заявки -->
+        <section id="application" class="section active">
+            <h2>Кредитная заявка</h2>
+            <form id="loanForm" onsubmit="submitApplication(event)">
+                <div class="form-group">
+                    <label>ФИО:</label>
+                    <input type="text" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Ежемесячный доход:</label>
+                    <input type="number" name="income" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Ежемесячные расходы:</label>
+                    <input type="number" name="expenses" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Сумма кредита:</label>
+                    <input type="number" name="amount" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Срок кредита (мес.):</label>
+                    <input type="number" name="term" min="6" max="60" required>
+                </div>
+
+                <button type="submit">Отправить заявку</button>
+            </form>
+            <div id="formResult" class="result"></div>
+        </section>
+
+        <!-- Скоринг -->
+        <section id="scoring" class="section">
+            <h2>Кредитный скоринг</h2>
+            <div class="result" id="scoringResult">
+                <p class="warning">Заполните кредитную заявку для расчета скоринга</p>
+            </div>
+        </section>
+
+        <!-- График платежей -->
+        <section id="payment" class="section">
+            <h2>График платежей</h2>
+            <div class="result" id="paymentResult">
+                <p class="warning">Заполните кредитную заявку для расчета платежей</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="paymentChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        let currentApplication = JSON.parse(localStorage.getItem('loanApp')) || {};
+        let chart = null;
+
+        // Инициализация данных при загрузке
+        document.addEventListener('DOMContentLoaded', () => {
+            if(currentApplication.amount) {
+                calculateScoring();
+                calculatePayments();
+            }
+        });
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            
+            if(sectionId === 'scoring') calculateScoring();
+            if(sectionId === 'payment') calculatePayments();
+        }
+
+        function submitApplication(e) {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            currentApplication = {
+                name: formData.get('name'),
+                income: parseFloat(formData.get('income')),
+                expenses: parseFloat(formData.get('expenses')),
+                amount: parseFloat(formData.get('amount')),
+                term: parseInt(formData.get('term'))
+            };
+            
+            localStorage.setItem('loanApp', JSON.stringify(currentApplication));
+            
+            document.getElementById('formResult').innerHTML = `
+                <div class="status approved">
+                    Заявка №${Math.floor(Math.random() * 1000)} успешно отправлена!
+                </div>
+            `;
+            
+            calculateScoring();
+            calculatePayments();
+        }
+
+        function calculateScoring() {
+            const scoringResult = document.getElementById('scoringResult');
+            if(!currentApplication.amount) {
+                scoringResult.innerHTML = '<p class="warning">Заполните кредитную заявку</p>';
+                return;
+            }
+            
+            const netIncome = currentApplication.income - currentApplication.expenses;
+            const dti = (currentApplication.expenses / currentApplication.income) * 100;
+            const amountPerMonth = currentApplication.amount / currentApplication.term;
+            
+            let score = 100;
+            score -= Math.max(0, (dti - 30) * 2);
+            score -= Math.min(50, (amountPerMonth / netIncome) * 100);
+            score = Math.max(0, Math.min(100, score));
+
+            let status;
+            if(score > 75) status = 'Одобрено';
+            else if(score > 50) status = 'На рассмотрении';
+            else status = 'Отклонено';
+
+            scoringResult.innerHTML = `
+                <h3>Результаты скоринга:</h3>
+                <p>Доход после расходов: ${netIncome.toFixed(2)} ₽</p>
+                <p>Соотношение долга к доходу: ${dti.toFixed(1)}%</p>
+                <p>Кредитный рейтинг: ${score.toFixed(1)}/100</p>
+                <div class="status ${score > 75 ? 'approved' : score > 50 ? 'pending' : 'rejected'}">
+                    Статус: ${status}
+                </div>
+            `;
+        }
+
+        function calculatePayments() {
+            const paymentResult = document.getElementById('paymentResult');
+            if(!currentApplication.amount || !currentApplication.term) {
+                paymentResult.innerHTML = '<p class="warning">Заполните кредитную заявку</p>';
+                return;
+            }
+            
+            const monthlyRate = 0.015; // 1.5% в месяц
+            const monthlyPayment = (currentApplication.amount * monthlyRate * 
+                Math.pow(1 + monthlyRate, currentApplication.term)) / 
+                (Math.pow(1 + monthlyRate, currentApplication.term) - 1);
+            
+            const totalPayment = monthlyPayment * currentApplication.term;
+            const overpayment = totalPayment - currentApplication.amount;
+            
+            // Обновляем график
+            if(chart) chart.destroy();
+            
+            const ctx = document.getElementById('paymentChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: currentApplication.term}, (_, i) => `Месяц ${i+1}`),
+                    datasets: [{
+                        label: 'Остаток долга',
+                        data: calculateDebtSchedule(),
+                        borderColor: '#3498db',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Сумма (₽)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            paymentResult.innerHTML = `
+                <h3>Параметры платежей:</h3>
+                <p>Ежемесячный платёж: ${monthlyPayment.toFixed(2)} ₽</p>
+                <p>Общая сумма выплат: ${totalPayment.toFixed(2)} ₽</p>
+                <p>Переплата: ${overpayment.toFixed(2)} ₽</p>
+            `;
+        }
+
+        function calculateDebtSchedule() {
+            const monthlyRate = 0.015;
+            const payment = (currentApplication.amount * monthlyRate * 
+                Math.pow(1 + monthlyRate, currentApplication.term)) / 
+                (Math.pow(1 + monthlyRate, currentApplication.term) - 1);
+            
+            let balance = currentApplication.amount;
+            const schedule = [];
+            
+            for(let i = 0; i < currentApplication.term; i++) {
+                const interest = balance * monthlyRate;
+                const principal = payment - interest;
+                balance -= principal;
+                schedule.push(balance > 0 ? balance : 0);
+            }
+            
+            return schedule;
+        }
+    </script>
+</body>
+</html>

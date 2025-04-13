@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учет личных расходов</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Учет личных расходов</h1>
+    </header>
+    <main>
+        <section class="expenses-list">
+            <h2>Последние расходы</h2>
+            <ul id="expenses-list">
+                <!-- Список расходов будет отображаться здесь -->
+            </ul>
+            <button id="filter-btn">Фильтровать</button>
+            <div class="filter-options">
+                <label>
+                    <input type="radio" name="filter" value="all" checked>
+                    Все
+                </label>
+                <label>
+                    <input type="radio" name="filter" value="week">
+                    За неделю
+                </label>
+                <label>
+                    <input type="radio" name="filter" value="month">
+                    За месяц
+                </label>
+                <select id="category-filter">
+                    <option value="food">Еда</option>
+                    <option value="transport">Транспорт</option>
+                    <option value="entertainment">Развлечения</option>
+                </select>
+            </div>
+        </section>
+        <button id="add-expense-btn">Добавить расход</button>
+        <div id="add-expense-form-container" style="display: none;">
+            <form id="add-expense-form">
+                <label>
+                    Сумма:
+                    <input type="number" id="amount" required>
+                </label>
+                <label>
+                    Категория:
+                    <select id="category">
+                        <option value="food">Еда</option>
+                        <option value="transport">Транспорт</option>
+                        <option value="entertainment">Развлечения</option>
+                    </select>
+                </label>
+                <label>
+                    Комментарий:
+                    <textarea id="comment"></textarea>
+                </label>
+                <button id="add-expense-submit">Добавить</button>
+            </form>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

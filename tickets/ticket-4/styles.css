@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+#add-task-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#add-task-btn:hover {
+    background-color: #3e8e41;
+}
+
+#task-list {
+    padding: 20px;
+}
+
+#tasks {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.task:last-child {
+    border-bottom: none;
+}
+
+.task-name {
+    font-weight: bold;
+}
+
+.task-category {
+    color: #666;
+}
+
+.task-deadline {
+    color: #999;
+}
+
+#filters {
+    margin-top: 20px;
+}
+
+#filters button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#filters button:hover {
+    background-color: #e0e0e0;
+}
+#filters button.active {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+#create-task-form {
+    padding: 20px;
+}
+
+#create-task-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#create-task-form input[type="text"], #create-task-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+#create-task-form button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#create-task-form button[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+#edit-task-form {
+    padding: 20px;
+}
+
+#edit-task-form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#edit-task-form input[type="text"], #edit-task-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+#edit-task-form button[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#edit-task-form button[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+.task-category.work {
+    color: #2196F3;
+}
+
+.task-category.personal {
+    color: #8BC34A;
+}
+
+.task-category.shopping {
+    color: #FF9800;
+}
+
+.complete-task-btn {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.complete-task-btn:hover {
+    background-color: #3e8e41;
+}

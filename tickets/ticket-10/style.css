@@ -1,0 +1,128 @@
+/* Общие стили */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background-color: #1f3a93;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background-color: #45a049;
+}
+
+/* Стилевые элементы для страниц */
+main {
+    padding: 20px;
+}
+
+/* Страница календаря */
+#calendar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+#calendar div {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#calendar div:hover {
+    background-color: #f0f0f0;
+}
+
+/* Страница тренировки */
+ul#exercise-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul#exercise-list li {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+button.start,
+button.complete {
+    background-color: #1f3a93;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+button.start:hover,
+button.complete:hover {
+    background-color: #4caf50;
+}
+
+/* Страница статистики */
+canvas {
+    display: block;
+    margin: 20px auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ccc;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #1f3a93;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}

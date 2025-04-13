@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление задачами</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Управление задачами</h1>
+        <button id="add-task-btn">Добавить задачу</button>
+    </header>
+    <main>
+        <section id="task-list">
+            <h2>Список задач</h2>
+            <ul id="tasks">
+            </ul>
+        </section>
+        <section id="create-task-form" style="display: none;">
+            <h2>Создать задачу</h2>
+            <form id="create-task-form">
+                <label for="task-name">Название задачи:</label>
+                <input type="text" id="task-name" name="task-name">
+                <label for="task-category">Категория:</label>
+                <select id="task-category" name="task-category">
+                    <option value="work">Работа</option>
+                    <option value="personal">Личное</option>
+                    <option value="shopping">Покупки</option>
+                </select>
+                <label for="task-deadline">Срок выполнения:</label>
+                <input type="date" id="task-deadline" name="task-deadline">
+                <button id="create-task-btn">Создать задачу</button>
+            </form>
+        </section>
+        <section id="edit-task-form" style="display: none;">
+            <h2>Редактировать задачу</h2>
+            <form id="edit-task-form">
+                <label for="task-name-edit">Название задачи:</label>
+                <input type="text" id="task-name-edit" name="task-name-edit">
+                <label for="task-category-edit">Категория:</label>
+                <select id="task-category-edit" name="task-category-edit">
+                    <option value="work">Работа</option>
+                    <option value="personal">Личное</option>
+                    <option value="shopping">Покупки</option>
+                </select>
+                <label for="task-deadline-edit">Срок выполнения:</label>
+                <input type="date" id="task-deadline-edit" name="task-deadline-edit">
+                <button id="edit-task-btn">Сохранить изменения</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>

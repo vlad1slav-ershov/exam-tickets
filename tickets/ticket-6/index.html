@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная - Чтение статей</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Чтение статей</h1>
+        <nav>
+            <a href="index.html" class="active">Главная</a>
+            <a href="favorites.html">Избранное</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="controls">
+            <div class="filter">
+                <label for="source-filter">Фильтр по источнику:</label>
+                <select id="source-filter">
+                    <option value="all">Все источники</option>
+                    <option value="habr">Habr</option>
+                    <option value="medium">Medium</option>
+                    <option value="vc">VC.ru</option>
+                </select>
+            </div>
+            
+            <div class="sort">
+                <label for="date-sort">Сортировка по дате:</label>
+                <select id="date-sort">
+                    <option value="newest">Сначала новые</option>
+                    <option value="oldest">Сначала старые</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="articles-list" id="articles-list">
+            <!-- Статьи будут загружены через JavaScript -->
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

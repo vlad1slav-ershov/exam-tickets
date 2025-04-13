@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Клиника</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        nav button {
+            margin-right: 10px;
+            padding: 10px;
+        }
+
+        section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        input, select {
+            padding: 6px;
+            margin: 5px 0;
+            width: 100%;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 12px;
+        }
+
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 6px;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+<h1>Система управления клиникой</h1>
+
+<nav>
+    <button onclick="showSection('appointments')">Запись на приём</button>
+    <button onclick="showSection('cards')">Медицинские карты</button>
+    <button onclick="showSection('services')">Учёт услуг</button>
+</nav>
+
+<section class="visible" id="appointments">
+    <h2>Запись на приём</h2>
+    <div class="form-group">
+        <input id="patientName" placeholder="Имя пациента" type="text"/>
+        <select id="doctorSelect">
+            <option value="Иванов">Иванов (терапевт)</option>
+            <option value="Петрова">Петрова (кардиолог)</option>
+            <option value="Смирнов">Смирнов (лор)</option>
+        </select>
+        <input id="visitDate" type="date"/>
+        <input id="visitTime" type="time"/>
+        <button onclick="registerAppointment()">Записать</button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Пациент</th>
+            <th>Врач</th>
+            <th>Дата</th>
+            <th>Время</th>
+        </tr>
+        </thead>
+        <tbody id="appointmentTable"></tbody>
+    </table>
+</section>
+
+<section id="cards">
+    <h2>Медицинские карты</h2>
+    <div class="form-group">
+        <select id="cardPatientSelect"></select>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Врач</th>
+            <th>Дата</th>
+            <th>Время</th>
+        </tr>
+        </thead>
+        <tbody id="cardHistory"></tbody>
+    </table>
+</section>
+
+<section id="services">
+    <h2>Учёт услуг</h2>
+    <div class="form-group">
+        <select id="servicePatientSelect"></select>
+        <input id="serviceName" placeholder="Название услуги" type="text"/>
+        <input id="serviceCost" placeholder="Стоимость (₽)" type="number"/>
+        <button onclick="addService()">Добавить услугу</button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Пациент</th>
+            <th>Услуга</th>
+            <th>Стоимость</th>
+        </tr>
+        </thead>
+        <tbody id="serviceTable"></tbody>
+    </table>
+    <p><strong>Общая сумма:</strong> <span id="totalSum">0</span> ₽</p>
+</section>
+
+<script>
+    const appointments = [];
+    const services = [];
+
+    function showSection(id) {
+        document.querySelectorAll("section").forEach(s => s.classList.remove("visible"));
+        document.getElementById(id).classList.add("visible");
+
+        if (id === 'cards') updateCardPatients();
+        if (id === 'services') updateServicePatients();
+    }
+
+    function registerAppointment() {
+        const name = document.getElementById("patientName").value.trim();
+        const doctor = document.getElementById("doctorSelect").value;
+        const date = document.getElementById("visitDate").value;
+        const time = document.getElementById("visitTime").value;
+
+        if (name && doctor && date && time) {
+            appointments.push({name, doctor, date, time});
+            updateAppointmentTable();
+            document.getElementById("patientName").value = "";
+        } else {
+            alert("Пожалуйста, заполните все поля.");
+        }
+    }
+
+    function updateAppointmentTable() {
+        const tbody = document.getElementById("appointmentTable");
+        tbody.innerHTML = "";
+        appointments.forEach(app => {
+            tbody.innerHTML += `<tr>
+          <td>${app.name}</td>
+          <td>${app.doctor}</td>
+          <td>${app.date}</td>
+          <td>${app.time}</td>
+        </tr>`;
+        });
+    }
+
+    function updateCardPatients() {
+        const select = document.getElementById("cardPatientSelect");
+        select.innerHTML = "";
+        const uniqueNames = [...new Set(appointments.map(a => a.name))];
+        uniqueNames.forEach(name => {
+            const opt = document.createElement("option");
+            opt.textContent = name;
+            select.appendChild(opt);
+        });
+
+        select.onchange = showCardHistory;
+        showCardHistory();
+    }
+
+    function showCardHistory() {
+        const name = document.getElementById("cardPatientSelect").value;
+        const history = appointments.filter(a => a.name === name);
+        const tbody = document.getElementById("cardHistory");
+        tbody.innerHTML = "";
+        history.forEach(h => {
+            tbody.innerHTML += `<tr>
+          <td>${h.doctor}</td>
+          <td>${h.date}</td>
+          <td>${h.time}</td>
+        </tr>`;
+        });
+    }
+
+    function updateServicePatients() {
+        const select = document.getElementById("servicePatientSelect");
+        select.innerHTML = "";
+        const uniqueNames = [...new Set(appointments.map(a => a.name))];
+        uniqueNames.forEach(name => {
+            const opt = document.createElement("option");
+            opt.textContent = name;
+            select.appendChild(opt);
+        });
+    }
+
+    function addService() {
+        const name = document.getElementById("servicePatientSelect").value;
+        const service = document.getElementById("serviceName").value.trim();
+        const cost = parseFloat(document.getElementById("serviceCost").value);
+
+        if (name && service && cost > 0) {
+            services.push({name, service, cost});
+            updateServiceTable();
+            document.getElementById("serviceName").value = "";
+            document.getElementById("serviceCost").value = "";
+        } else {
+            alert("Введите корректные данные.");
+        }
+    }
+
+    function updateServiceTable() {
+        const tbody = document.getElementById("serviceTable");
+        tbody.innerHTML = "";
+        let total = 0;
+
+        services.forEach(s => {
+            total += s.cost;
+            tbody.innerHTML += `<tr>
+          <td>${s.name}</td>
+          <td>${s.service}</td>
+          <td>${s.cost.toFixed(2)} ₽</td>
+        </tr>`;
+        });
+
+        document.getElementById("totalSum").textContent = total.toFixed(2);
+    }
+
+    updateAppointmentTable();
+    updateCardPatients();
+    updateServicePatients();
+</script>
+</body>
+</html>
