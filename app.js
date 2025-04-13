@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function copyToClipboard(e) {
-        const text = e.target.getAttribute('data-cmd');
+        const text = e.target.textContent.trim(); 
         navigator.clipboard.writeText(text)
             .then(() => showToast('Команда скопирована!'))
             .catch(() => showToast('Ошибка копирования'));
