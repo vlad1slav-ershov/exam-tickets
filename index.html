@@ -1,17 +1,51 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
-    <title>Все билеты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="билеты">
+    <title>испв2к</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <script src="https://unpkg.com/scrollreveal"></script>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <h1>(не забудь удалить файл)</h1>
+    <header class="main-header">
+        <div class="container">
+            <h1 class="logo">не забудь удалить файлы<span class="highlight">и из корзины тоже</span></h1>
+            <button class="theme-toggle" aria-label="Переключить тему">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="header-bar">
+            <h2>Билеты <span class="badge" id="ticketCount"></span></h2>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Поиск билетов...">
+                <i class="fas fa-search"></i>
+            </div>
+        </div>
+
+        <div class="grid-loading" id="loading">
+            <div class="loader"></div>
+        </div>
+
         <div id="ticketsList" class="tickets-grid"></div>
-    </div>
+
+        <div class="cli-fab" id="cliFab" title="Показать CLI команды">
+            <i class="fas fa-terminal"></i>
+        </div>
+    </main>
+
     <script src="app.js"></script>
 </body>
 
